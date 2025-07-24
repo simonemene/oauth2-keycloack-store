@@ -1,5 +1,6 @@
 package com.store.security.store_security.security;
 
+import com.store.security.store_security.converter.KeycloackConverter;
 import com.store.security.store_security.exceptionhandle.CustomAccessDeniedHandler;
 import com.store.security.store_security.filter.JwtValidatorFilter;
 import com.store.security.store_security.properties.StoreProperties;
@@ -20,6 +21,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
@@ -44,6 +46,9 @@ public class ConfigSecurity {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(new KeycloackConverter());
 
         http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -97,6 +102,10 @@ public class ConfigSecurity {
                         .invalidateHttpSession(true).permitAll()
                         .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
         );
+
+        http.oauth2ResourceServer(resource->resource.jwt(
+                token->token.jwtAuthenticationConverter(converter)
+        ));
 
        // http.requiresChannel(channel->channel.anyRequest().requiresSecure());
         //authentication
