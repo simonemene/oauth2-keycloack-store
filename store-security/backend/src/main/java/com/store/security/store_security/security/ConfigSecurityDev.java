@@ -1,7 +1,6 @@
 package com.store.security.store_security.security;
 
 import com.store.security.store_security.exceptionhandle.CustomAccessDeniedHandler;
-import com.store.security.store_security.filter.JwtValidatorFilter;
 import com.store.security.store_security.properties.StoreProperties;
 import com.store.security.store_security.provider.UserProviderDetailsManager;
 import com.store.security.store_security.service.UserSecurityDetailService;
@@ -23,7 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -73,8 +71,6 @@ public class ConfigSecurityDev {
                                        "/swagger-ui/index.html",
                                         "/api/auth/logout"
                                        ).permitAll());
-        //set custom filter
-        http.addFilterBefore(new JwtValidatorFilter(storeProperties),BasicAuthenticationFilter.class);
         http.cors(cors->cors.configurationSource(
                 new CorsConfigurationSource() {
                     @Override
