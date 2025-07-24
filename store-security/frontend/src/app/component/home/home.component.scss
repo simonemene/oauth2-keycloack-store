@@ -1,0 +1,19 @@
+@keyframes appearance {
+  0% {
+    transform: scale(0);
+  }
+  60% {
+    transform: scale(1.05);
+  }
+  80% {
+    transform: scale(0.97);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.initial {
+  animation: appearance 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  transform-origin: center;
+}

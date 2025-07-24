@@ -1,0 +1,131 @@
+<div class="overflow-x-hidden margin-menu">
+  <div class="mx-auto max-w-2xl justify-items-center">
+    <h2
+      class="text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl"
+    >
+      WELCOME
+    </h2>
+    <p class="mt-2 text-lg leading-8 text-gray-600">{{ username.username }}</p>
+  </div>
+
+  <div class="bg-white-100">
+    <div class="mx-auto max-w-7xl sm:px-6">
+      <div class="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-32">
+        <h2 class="text-2xl font-bold text-gray-900">PERSONAL PAGE</h2>
+
+        @if (isUser()) {
+        <div
+          class="mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:space-y-0 lg:gap-x-6"
+        >
+          <!-- Profile Card -->
+          <div class="group relative">
+            <img
+              src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-02-edition-01.jpg"
+              alt="Profile"
+              class="w-full rounded-lg bg-white object-cover group-hover:opacity-75 max-sm:h-80 sm:aspect-[2/1] lg:aspect-square"
+            />
+            <h3 class="mt-6 text-sm text-gray-500">
+              <a [routerLink]="['/user-page']"
+                ><span class="absolute inset-0"></span>Profile</a
+              >
+            </h3>
+            <p class="text-base font-semibold text-gray-900">
+              Personal profile
+            </p>
+          </div>
+
+          <!-- Orders Card -->
+          <div class="group relative">
+            <img
+              src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-02-edition-02.jpg"
+              alt="Orders"
+              class="w-full rounded-lg bg-white object-cover group-hover:opacity-75 max-sm:h-80 sm:aspect-[2/1] lg:aspect-square"
+            />
+            <h3 class="mt-6 text-sm text-gray-500">
+              <a [routerLink]="['/user-orders-page']"
+                ><span class="absolute inset-0"></span>Orders</a
+              >
+            </h3>
+            <p class="text-base font-semibold text-gray-900">Personal orders</p>
+          </div>
+
+          <!-- Articles Card -->
+          <div class="group relative">
+            <img
+              src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-02-edition-03.jpg"
+              alt="Articles"
+              class="w-full rounded-lg bg-white object-cover group-hover:opacity-75 max-sm:h-80 sm:aspect-[2/1] lg:aspect-square"
+            />
+            <h3 class="mt-6 text-sm text-gray-500">
+              <a [routerLink]="['/user-article']"
+                ><span class="absolute inset-0"></span>Articles</a
+              >
+            </h3>
+            <p class="text-base font-semibold text-gray-900">Shop online</p>
+          </div>
+        </div>
+        } @else if(isAdmin()) {
+        <div
+          class="mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:space-y-0 lg:gap-x-6"
+        >
+          <!-- View User Card -->
+          <div class="group relative">
+            <img
+              src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-02-edition-01.jpg"
+              alt="View user"
+              class="w-full rounded-lg bg-white object-cover group-hover:opacity-75 max-sm:h-80 sm:aspect-[2/1] lg:aspect-square"
+            />
+            <h3 class="mt-6 text-sm text-gray-500">
+              <a [routerLink]="['/users']"
+                ><span class="absolute inset-0"></span>View user</a
+              >
+            </h3>
+            <p class="text-base font-semibold text-gray-900">All user</p>
+          </div>
+
+          <!-- View Track Card -->
+          <div class="group relative">
+            <img
+              src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-02-edition-03.jpg"
+              alt="View Track"
+              class="w-full rounded-lg bg-white object-cover group-hover:opacity-75 max-sm:h-80 sm:aspect-[2/1] lg:aspect-square"
+            />
+            <h3 class="mt-6 text-sm text-gray-500">
+              <a [routerLink]="['/article']"
+                ><span class="absolute inset-0"></span>Add Article</a
+              >
+            </h3>
+            <p class="text-base font-semibold text-gray-900">add Article</p>
+          </div>
+          <div class="group relative">
+            <img
+              src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-02-edition-03.jpg"
+              alt="View Track"
+              class="w-full rounded-lg bg-white object-cover group-hover:opacity-75 max-sm:h-80 sm:aspect-[2/1] lg:aspect-square"
+            />
+            <h3 class="mt-6 text-sm text-gray-500">
+              <a [routerLink]="['/articles']"
+                ><span class="absolute inset-0"></span>View Article</a
+              >
+            </h3>
+            <p class="text-base font-semibold text-gray-900">View Article</p>
+          </div>
+        </div>
+        } @else if(isTrack()) {
+        <!-- View Track Card -->
+        <div class="group relative">
+          <img
+            src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-02-edition-03.jpg"
+            alt="View Track"
+            class="w-full rounded-lg bg-white object-cover group-hover:opacity-75 max-sm:h-80 sm:aspect-[2/1] lg:aspect-square"
+          />
+          <h3 class="mt-6 text-sm text-gray-500">
+            <a [routerLink]="['/track']"><span class="absolute inset-0"></span>View Track</a>
+          </h3>
+          <p class="text-base font-semibold text-gray-900">All track</p>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

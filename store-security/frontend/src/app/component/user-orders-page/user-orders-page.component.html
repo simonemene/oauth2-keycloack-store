@@ -1,0 +1,48 @@
+@if(modifyError) {
+<app-alert [message]="message"></app-alert>
+} @if(order && order.orders && order.orders.length>0) { @for(orderUser of
+order.orders; track orderUser; let index=$index) {
+<h1 class="p-8">ORDER NUMBER {{ index + 1 }}</h1>
+<ul role="list" class="divide-y divide-gray-100 p-8">
+  @for(article of orderUser.articles ;track article) {
+
+  <li class="flex justify-between gap-x-6 py-5">
+    <div class="flex min-w-0 gap-x-4">
+      <img
+        class="size-12 flex-none rounded-full bg-gray-50"
+        src="assets/article.svg"
+        alt=""
+      />
+      <div class="min-w-0 flex-auto">
+        <p class="text-sm/6 font-semibold text-gray-900">
+          {{ article.articleDto.name }}
+        </p>
+        <p class="mt-1 truncate text-xs/5 text-gray-500">
+          {{ article.articleDto.description }}
+        </p>
+      </div>
+    </div>
+    <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+      <p class="text-sm/6 text-gray-900">PRICE</p>
+      <p class="mt-1 text-xs/5 text-gray-500">{{ article.articleDto.price }}</p>
+    </div>
+  </li>
+  @if(selectedOrderId === orderUser.idOrder) {
+  <app-user-track-page [idOrder]="selectedOrderId"></app-user-track-page>
+  } }
+  <div class="mt-6 flex items-center justify-end gap-x-6">
+    <button
+      type="button"
+      class="text-sm/6 font-semibold text-gray-900"
+      (click)="track(orderUser.idOrder)"
+    >
+      Track
+    </button>
+  </div>
+  <hr
+    class="my-12 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:via-neutral-400"
+  />
+</ul>
+} } @else {
+<p>NO ORDERS</p>
+}

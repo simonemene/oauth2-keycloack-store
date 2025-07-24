@@ -1,0 +1,44 @@
+<ul role="list" class="divide-y divide-gray-100 p-8">
+  @if(modifyError) {
+  <app-alert [message]="message"></app-alert>
+  } @for(articleDto of articles; track articleDto) {
+  <li class="flex justify-between gap-x-6 py-5">
+    <div class="flex min-w-0 gap-x-4">
+      <img
+        class="size-12 flex-none rounded-full bg-gray-50"
+        src="assets/article.svg"
+        alt=""
+      />
+      <div class="min-w-0 flex-auto">
+        <p class="text-sm/6 font-semibold text-gray-900">
+          {{ articleDto.article.name }}
+        </p>
+        <p class="mt-1 truncate text-xs/5 text-gray-500">
+          {{ articleDto.article.description }}
+        </p>
+      </div>
+    </div>
+    <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+      <p class="text-sm/6 text-gray-900">PRICE</p>
+      <p class="mt-1 text-xs/5 text-gray-500">{{ articleDto.article.price }}</p>
+      <p class="text-sm/6 text-gray-900">QUANTITY</p>
+      <p class="mt-1 text-xs/5 text-gray-500">{{ articleDto.quantity }}</p>
+    </div>
+    <div>
+      <div
+        class="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset cursor-pointer hover:bg-gray-50"
+        (click)="quantity(articleDto.article.id)"
+      >
+        Add Quantity
+      </div>
+      <div
+        class="ml-[5px] inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset cursor-pointer hover:bg-gray-50"
+        (click)="minus(articleDto.article.id)"
+      >
+        Remove Quantity
+      </div>
+    </div>
+  </li>
+
+  }
+</ul>

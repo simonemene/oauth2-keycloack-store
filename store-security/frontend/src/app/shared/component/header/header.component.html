@@ -1,0 +1,47 @@
+<div class="grid grid-cols-8 bg-indingo-200 opacity-60 shadow-xl">
+
+     @if(authenticated())
+     {
+           <div class="!opacity-100  col-start-1 text-gray-950 font-sans self-center ml-4">
+     <a routerLink="welcome">
+            <img class="h-10 w-auto object-cover" src="assets/shop.svg" alt="image">
+     </a>       
+    </div>
+     }
+   
+    @if(!authenticated())
+    {
+     <div class="!opacity-100  col-start-1 text-gray-950 font-sans self-center ml-4">
+     <a routerLink="">
+            <img class="h-10 w-auto object-cover" src="assets/shop.svg" alt="image">
+     </a>       
+    </div>
+     <div class="col-start-4 text-gray-950 font-sans self-center font-bold cursor-pointer">
+     <a routerLink="/signup">
+         Sign up
+         </a>
+    </div>
+    <div class="col-start-5 text-gray-950 font-sans self-center font-bold cursor-pointer">
+     <a routerLink="/login">
+         Login
+         </a>
+    </div>
+    }
+    <div class="col-start-6 text-gray-950 font-sans self-center font-bold cursor-pointer">
+         About
+    </div>
+    <div class="col-start-7 text-gray-950 font-sans self-center font-bold cursor-pointer">
+         Contact
+    </div>
+    
+    @if(authenticated())
+    {
+    
+     <div class="col-start-8 text-gray-950 font-sans self-center font-bold cursor-pointer">
+     <a routerLink="/logout">
+          <img class="h-10 w-auto object-cover" src="assets/logout.svg" alt="image">
+         </a>
+    </div>
+    }
+
+</div>

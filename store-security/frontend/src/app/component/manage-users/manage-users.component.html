@@ -1,0 +1,36 @@
+<div class="bg-white py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <h2 class="text-3xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-4xl mb-8">MANAGE USERS</h2>
+
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+      
+      <ul role="list" class="space-y-6 col-span-1">
+        @if(this.allUser)
+        {
+          @for(user of this.allUser.users; track user)
+          {
+            @if(!user.username.includes('track') && !user.username.includes('admin'))
+            {
+            <li>
+              <div class="flex items-center gap-x-6">
+                <img class="size-16 rounded-full" src="assets/person.svg" alt="" />
+                <div>
+                  <h3 class="text-base/7 font-semibold tracking-tight text-gray-900">{{user.username}}</h3>
+                  <p class="text-sm/6 font-semibold text-indigo-600">{{user.age}}</p>
+                  <button class="border border-solid border-4 border-indigo-300 p-[2px] bg-blue-300 hover:bg-blue-200 cursor-pointer rounded-md text-shadow-sm font-sans text-sm font-bold text-neutral-600" (click)="openUser(user.id)">Profile</button>
+                  <button class="border border-solid border-4 border-indigo-300 p-[2px] bg-blue-300 hover:bg-blue-200 cursor-pointer rounded-md text-shadow-sm font-sans text-sm font-bold text-neutral-600" (click)="openOrders(user.id)">Orders</button>
+                </div>
+              </div>
+            </li>
+          }
+          }
+        }
+      </ul>
+
+      <div class="col-span-2 border-l border-gray-300 pl-8">
+        <router-outlet></router-outlet>
+      </div>
+
+    </div>
+  </div>
+</div>
