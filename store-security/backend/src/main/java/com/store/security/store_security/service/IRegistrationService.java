@@ -7,4 +7,5 @@ import java.util.Map;
 public interface IRegistrationService {
 
     public UserDto registrationUser(UserDto userDto);
+    public UserDto registrationUserKeycloack(UserDto userDto);
 }

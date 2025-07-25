@@ -1,5 +1,6 @@
 package com.store.security.store_security;
 
+import com.store.security.store_security.properties.KeycloackProperties;
 import com.store.security.store_security.properties.StoreProperties;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -14,7 +15,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 @SpringBootApplication
 @EnableAspectJAutoProxy
-@EnableConfigurationProperties(value = {StoreProperties.class})
+@EnableConfigurationProperties(value = {StoreProperties.class, KeycloackProperties.class })
 @EnableMethodSecurity(jsr250Enabled = true,securedEnabled = true)
 @OpenAPIDefinition(
 		info = @Info(
