@@ -55,7 +55,7 @@ public class AuthenticationController {
     )
     @PostMapping("/registration")
     public ResponseEntity<UserDto> registration(@RequestBody @Valid UserDto userDto) {
-        UserDto result = registrationService.registrationUser(userDto);
+        UserDto result = registrationService.registrationUserKeycloack(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
 
     }

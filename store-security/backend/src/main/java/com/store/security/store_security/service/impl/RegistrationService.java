@@ -84,11 +84,6 @@ public class RegistrationService implements IRegistrationService {
         UserEntity userRegister = null;
         if (userDto.getUsername() != null && userDto.getPassword() != null && !userDto.getUsername()
                 .isEmpty()) {
-            Optional<UserEntity> userCheck = userRepository.findByUsername(
-                    userDto.getUsername());
-            if (userCheck.isPresent() && userCheck.get().getId() > 0) {
-                throw new UserException("User already exist");
-            }
             userDto.setTmstInsert(LocalDateTime.now());
             RoleResource role = keycloak.realm(keycloackProperties.realm()).roles()
                     .get(RoleConstants.USER.getRole());
