@@ -2,6 +2,7 @@ package com.store.security.store_security.service.impl;
 
 import com.store.security.store_security.annotation.LogExecutionTime;
 import com.store.security.store_security.constants.RoleConstants;
+import com.store.security.store_security.dto.RoleDto;
 import com.store.security.store_security.dto.UserDto;
 import com.store.security.store_security.entity.AuthoritiesEntity;
 import com.store.security.store_security.entity.UserEntity;
@@ -19,6 +20,7 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RoleResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
+import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -108,6 +110,16 @@ public class RegistrationService implements IRegistrationService {
             }
         }
         return userDto;
+    }
+
+    @Override
+    public RoleDto registrationRole(RoleDto roleDto) {
+        RoleRepresentation role = new RoleRepresentation();
+        role.setName(roleDto.getName());
+        role.setDescription(roleDto.getDescription());
+        keycloak.realm(keycloackProperties.realm()).roles().create(role);
+        RoleRepresentation roleCreated = keycloak.realm(keycloackProperties.realm()).roles().get(RoleConstants.USER.getRole()).toRepresentation();
+        return RoleDto.builder().name(roleCreated.getName()).description(roleCreated.getDescription()).build();
     }
 
 }

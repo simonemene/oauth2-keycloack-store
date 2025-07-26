@@ -37,10 +37,6 @@ export class SessionStorageService {
     this.router.navigate(['/login']);
   }
 
-  getJwt(): boolean | null {
-    return this.jwt();
-  }
-
   getUsernameJwt(): string {
     let jwt = window.sessionStorage.getItem('Authorization');
     if (jwt) {

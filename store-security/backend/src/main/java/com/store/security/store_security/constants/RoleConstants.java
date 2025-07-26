@@ -8,7 +8,10 @@ public enum RoleConstants {
 
     USER("ROLE_USER"),
     ADMIN("ROLE_ADMIN"),
-    TRACK("ROLE_TRACK");
+    TRACK("ROLE_TRACK"),
+    USER_DESCRIPTION("Rapresent an user"),
+    ADMIN_DESCRIPTION("Rapresent an admin"),
+    TRACK_DESCRIPTION("Rapresent an track");
 
     private final String role;
 
