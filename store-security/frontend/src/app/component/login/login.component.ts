@@ -39,7 +39,7 @@ export class LoginComponent {
     this.user.username=this.storeForm.value.email;
     this.user.password=this.storeForm.value.password;
 
-    this.auth.authentication(this.user).subscribe(
+    this.auth.getUser(this.user).subscribe(
       {
         next:(responseData:LoginUserJwt)=>
         {         

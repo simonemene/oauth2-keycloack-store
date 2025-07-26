@@ -3,7 +3,6 @@ import { HomeComponent } from './component/home/home.component';
 import { WelcomeComponent } from './component/welcome/welcome.component';
 import { LoginComponent } from './component/login/login.component';
 import { LogoutComponent } from './component/logout/logout.component';
-import { authenticationGuard } from './guard/authentication.guard';
 import { roleGuard } from './guard/role.guard';
 import { ROLE } from './constant/role.constants';
 import { RegisterComponent } from './component/register/register.component';
@@ -18,7 +17,7 @@ import { UserArticlesPageComponent } from './component/user-articles-page/user-a
 import { UserOrdersPageComponent } from './component/user-orders-page/user-orders-page.component';
 import { ManageTrackComponent } from './component/manage-track/manage-track.component';
 import { TrackOrdersPageComponent } from './component/track-orders-page/track-orders-page.component';
-import { KeycloackGuard } from './interceptor/http-keycloack.interceptor';
+import { KeycloackGuard } from './guard/http-keycloack.interceptor';
 
 export const routes: Routes = [
     {

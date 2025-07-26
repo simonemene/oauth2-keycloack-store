@@ -118,7 +118,7 @@ public class RegistrationService implements IRegistrationService {
         role.setName(roleDto.getName());
         role.setDescription(roleDto.getDescription());
         keycloak.realm(keycloackProperties.realm()).roles().create(role);
-        RoleRepresentation roleCreated = keycloak.realm(keycloackProperties.realm()).roles().get(RoleConstants.USER.getRole()).toRepresentation();
+        RoleRepresentation roleCreated = keycloak.realm(keycloackProperties.realm()).roles().get(roleDto.getName()).toRepresentation();
         return RoleDto.builder().name(roleCreated.getName()).description(roleCreated.getDescription()).build();
     }
 
