@@ -30,6 +30,7 @@ export class HeaderComponent implements OnInit {
 
     if(this.loggedIn)
     {
+      this.sessionStorageAuth.login();
       this.userProfile = await this.keycloackService.loadUserProfile();
        this.user.username = this.userProfile?.email || "";
        window.sessionStorage.setItem('userdetails',JSON.stringify(this.user));
