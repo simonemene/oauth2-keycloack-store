@@ -2,6 +2,9 @@ import { Component, HostListener } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/component/header/header.component';
 import { FooterComponent } from './shared/component/footer/footer.component';
+import { KeycloakService } from 'keycloak-angular';
+
+
 
 @Component({
   selector: 'app-root',

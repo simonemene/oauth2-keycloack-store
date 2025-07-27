@@ -17,19 +17,14 @@ import { UserArticlesPageComponent } from './component/user-articles-page/user-a
 import { UserOrdersPageComponent } from './component/user-orders-page/user-orders-page.component';
 import { ManageTrackComponent } from './component/manage-track/manage-track.component';
 import { TrackOrdersPageComponent } from './component/track-orders-page/track-orders-page.component';
-import { KeycloackGuard } from './guard/http-keycloack.interceptor';
+import { KeycloackGuard } from './guard/keycloack.guard';
 
 export const routes: Routes = [
     {
         path: '', component: HomeComponent, pathMatch: 'full'
     },
     {
-        path: 'welcome', component: WelcomeComponent,
-        canActivate: [KeycloackGuard],
-        data: { roles: [ROLE.USER, ROLE.ADMIN,ROLE.TRACK] }
-    },
-    {
-        path: 'login', component: LoginComponent
+        path: 'welcome', component: WelcomeComponent
     },
     {
         path: 'logout', component: LogoutComponent,

@@ -1,5 +1,6 @@
 package com.store.security.store_security.security;
 
+import com.store.security.store_security.converter.KeycloackConverter;
 import com.store.security.store_security.exceptionhandle.CustomAccessDeniedHandler;
 import com.store.security.store_security.properties.StoreProperties;
 import com.store.security.store_security.provider.UserProviderDetailsManager;
@@ -19,6 +20,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
@@ -42,6 +44,8 @@ public class ConfigSecurityDev {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(new KeycloackConverter());
 
 
         http.csrf(AbstractHttpConfigurer::disable);
@@ -88,14 +92,10 @@ public class ConfigSecurityDev {
                 }
         ));
 
-        http.logout(logout->
-                logout.deleteCookies("JSESSIONID","CSRF-TOKEN")
-                        .logoutUrl("/api/auth/logout")
-                        .invalidateHttpSession(true).permitAll()
-                        .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
-        );
+        http.oauth2ResourceServer(resource->resource.jwt(
+                token->token.jwtAuthenticationConverter(converter)
+        ));
 
-        //authentication
         http.formLogin(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
         http.exceptionHandling(exception->exception.accessDeniedHandler(new CustomAccessDeniedHandler()));

@@ -34,7 +34,6 @@ export class SessionStorageService {
   logout() {
     this.jwt.set(false);
     window.sessionStorage.setItem('Authorization', '');
-    this.router.navigate(['/login']);
   }
 
   getUsernameJwt(): string {
