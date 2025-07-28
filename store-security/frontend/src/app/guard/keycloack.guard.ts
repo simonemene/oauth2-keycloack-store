@@ -26,22 +26,22 @@ export class KeycloackGuard extends KeycloakAuthGuard
     }
 
     public override async isAccessAllowed(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean | UrlTree> {
-        if(!this.authenticated)
-        {
-            await this.keycloack.login({
-                redirectUri: window.location.origin + state.url,
-            });
-        }else
-        {
-            this.userProfile = await this.keycloack.loadUserProfile();
-            this.sessionStorageService.login();
-        }
-        const requiredRoles = route.data["roles"];
-        if(!(requiredRoles instanceof Array) || requiredRoles.length === 0)
-        {
-            return true;
-        }
-
-        return requiredRoles.some((role)=>this.roles.includes(role));
+    if (!this.authenticated) {
+        await this.keycloack.login({
+            redirectUri: window.location.origin + state.url,
+        });
+    } else {
+        this.userProfile = await this.keycloack.loadUserProfile();
+        const token = await this.keycloack.getToken();
+        this.sessionStorageService.login(token || '');
     }
+    
+    const requiredRoles = route.data["roles"];
+    if (!(requiredRoles instanceof Array) || requiredRoles.length === 0) {
+        return true;
+    }
+    
+    return requiredRoles.some((role) => this.roles.includes(role));
+}
+
 }

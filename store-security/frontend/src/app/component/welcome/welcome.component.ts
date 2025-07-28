@@ -30,7 +30,7 @@ export class WelcomeComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     if (this.sessionStorageAuth.isAuthenticated()) {
       let jwt = window.sessionStorage.getItem('Authorization');
       this.username.username = this.sessionStorageAuth.getUsernameJwt();

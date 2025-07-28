@@ -1,65 +1,58 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { UserDto } from '../model/UserDto';
 import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SessionStorageService {
-  private readonly jwt = signal<boolean | null>(null);
+  private readonly authSignal = signal<boolean>(false);
 
-  readonly isAuthenticated = computed(() => {
-    const jwt = this.jwt();
-    return jwt != null && jwt;
-  });
+  readonly isAuthenticated = computed(() => this.authSignal());
 
   constructor(private router: Router) {
-    const authorization = window.sessionStorage.getItem('Authorization');
-    if (authorization) {
-      try {
-        const parsed = JSON.parse(authorization);
-        if (parsed) {
-          this.jwt.set(parsed);
-        }
-      } catch (e) {
-        console.warn('Error authentication user:');
-      }
+    const token = sessionStorage.getItem('Authorization');
+    if (token && token.length > 0) {
+      this.authSignal.set(true);
     }
   }
 
-  login() {
-    this.jwt.set(true);
+  login(token: string) {
+    sessionStorage.setItem('Authorization', token);
+    this.authSignal.set(true);
   }
 
   logout() {
-    this.jwt.set(false);
-    window.sessionStorage.setItem('Authorization', '');
+    sessionStorage.clear();
+    this.authSignal.set(false);
+    this.router.navigate(['/login']);
   }
 
   getUsernameJwt(): string {
-    let jwt = window.sessionStorage.getItem('Authorization');
+    const jwt = sessionStorage.getItem('Authorization');
     if (jwt) {
       const payload = this.decodeJwtPayload(jwt);
-      return payload?.username;
+      return payload?.username || '';
     }
     return '';
   }
 
   getAuthoritiesJwt(): string[] {
-    let jwt = window.sessionStorage.getItem('Authorization');
+    const jwt = sessionStorage.getItem('Authorization');
     if (jwt) {
       const payload = this.decodeJwtPayload(jwt);
-      const authoritiesString = payload?.authorities;
-      return authoritiesString?.split(',') || [];
+      return (payload?.authorities || '').split(',');
     }
     return [];
   }
 
-  decodeJwtPayload(token: string): any {
-    if (!token) return null;
-
-    const payload = token.split('.')[1];
-    const decoded = atob(payload);
-    return JSON.parse(decoded);
+  private decodeJwtPayload(token: string): any {
+    try {
+      const payload = token.split('.')[1];
+      const decoded = atob(payload);
+      return JSON.parse(decoded);
+    } catch (e) {
+      console.error('JWT decoding error', e);
+      return null;
+    }
   }
 }

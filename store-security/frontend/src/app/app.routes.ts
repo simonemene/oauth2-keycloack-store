@@ -24,7 +24,7 @@ export const routes: Routes = [
         path: '', component: HomeComponent, pathMatch: 'full'
     },
     {
-        path: 'welcome', component: WelcomeComponent,canActivate: [KeycloackGuard]
+        path: 'welcome', component: WelcomeComponent
     },
     {
         path: 'logout', component: LogoutComponent,

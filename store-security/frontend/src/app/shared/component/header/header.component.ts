@@ -26,16 +26,19 @@ export class HeaderComponent implements OnInit {
   authenticated = this.sessionStorageAuth.isAuthenticated;
 
   async ngOnInit() {
-    this.loggedIn = await this.keycloackService.isLoggedIn();
+  this.loggedIn = await this.keycloackService.isLoggedIn();
 
-    if(this.loggedIn)
-    {
-      this.sessionStorageAuth.login();
-      this.userProfile = await this.keycloackService.loadUserProfile();
-       this.user.username = this.userProfile?.email || "";
-       window.sessionStorage.setItem('userdetails',JSON.stringify(this.user));
-    }
+  if(this.loggedIn)
+  {
+    const token = await this.keycloackService.getToken();
+    this.sessionStorageAuth.login(token || '');
+
+    this.userProfile = await this.keycloackService.loadUserProfile();
+    this.user.username = this.userProfile?.email || "";
+    window.sessionStorage.setItem('userdetails', JSON.stringify(this.user));
   }
+}
+
 
   login()
   {
