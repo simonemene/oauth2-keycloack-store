@@ -4,16 +4,16 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { HttpClientModule, HttpClientXsrfModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { KeycloakService } from 'keycloak-angular';
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
-function intializeKeycloack(keycloack:KeycloakService)
+function intializeKeycloak(keycloack:KeycloakService)
 {
   return ()=>
     keycloack.init({
       config:{
-        url:'http://localhost:8180',
+        url:'http://localhost:8180/',
         realm:'store-security',
-        clientId:'store-security'
+        clientId:'store-security-frontend'  
       },
       initOptions:
       {
@@ -25,22 +25,16 @@ function intializeKeycloack(keycloack:KeycloakService)
 }
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes),provideHttpClient(), provideAnimationsAsync(),
-    importProvidersFrom(
-      HttpClientModule,
-      HttpClientXsrfModule.withOptions(
-        {
-          cookieName:'XSRF-TOKEN',
-          headerName:'X-XSRF-TOKEN'
-        }
-      )
-    ),
-    KeycloakService,
+  providers: [
+    provideRouter(routes),
+    provideHttpClient(),
+    provideAnimationsAsync(),
+    importProvidersFrom(KeycloakAngularModule),
     {
-      provide:APP_INITIALIZER,
-      useFactory:intializeKeycloack,
-      multi:true,
-      deps:[KeycloakService]
-    }
-  ]
+      provide: APP_INITIALIZER,
+      useFactory: intializeKeycloak,
+      multi: true,
+      deps: [KeycloakService],
+    },
+  ],
 };
