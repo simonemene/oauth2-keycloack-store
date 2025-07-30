@@ -1,11 +1,8 @@
-import { Component, HostListener, inject, OnInit } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/component/header/header.component';
 import { FooterComponent } from './shared/component/footer/footer.component';
-import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
-import { SessionStorageService } from './service/session-storage.service';
-
-
+import { KeycloakAngularModule } from 'keycloak-angular';
 
 @Component({
   selector: 'app-root',
@@ -14,23 +11,11 @@ import { SessionStorageService } from './service/session-storage.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent{
-   sessionStorageService = inject(SessionStorageService);
+export class AppComponent {
   title = 'frontend';
-
-  constructor()
-  {
-    console.log("inizio");
-    
-  }
 
    @HostListener('window:beforeunload', ['$event'])
   unloadNotification(event: any) {
     navigator.sendBeacon('/logout'); 
   }
-
 }
-
-
-
-

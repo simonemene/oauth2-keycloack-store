@@ -8,7 +8,6 @@ import { StockDto } from '../../model/StockDto';
 import { ROLE } from '../../constant/role.constants';
 import { Router, RouterModule } from '@angular/router';
 import { UserService } from '../../service/user.service';
-import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-welcome',
@@ -21,7 +20,6 @@ export class WelcomeComponent implements OnInit {
   username: UserDto = new UserDto();
   sessionStorageAuth = inject(SessionStorageService);
   userService = inject(UserService);
-  keycloakService = inject(KeycloakService);
 
   constructor(private router: Router) {
     effect(() => {
@@ -32,9 +30,11 @@ export class WelcomeComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     if (this.sessionStorageAuth.isAuthenticated()) {
-        this.username.authoritiesList = [ROLE.ADMIN];
+      let jwt = window.sessionStorage.getItem('Authorization');
+      this.username.username = this.sessionStorageAuth.getUsernameJwt();
+      this.username.authoritiesList = this.sessionStorageAuth.getAuthoritiesJwt();
     }
   }
 

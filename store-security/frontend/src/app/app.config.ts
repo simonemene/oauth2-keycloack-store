@@ -1,38 +1,42 @@
-import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom } from '@angular/core';
+import {
+  APP_INITIALIZER,
+  ApplicationConfig,
+  importProvidersFrom,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { HttpClientModule, HttpClientXsrfModule, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { httpInterceptor } from './interceptor/http.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
-function intializeKeycloak(keycloack:KeycloakService)
-{
-  return ()=>
-    keycloack.init({
-      config:{
-        url:'http://localhost:8180/',
-        realm:'store-security',
-        clientId:'store-security-frontend'  
+function initializeKeycloak(keycloak: KeycloakService) {
+  return () =>
+    keycloak.init({
+      config: {
+        url: 'http://localhost:8180/',
+        realm: 'store-security',
+        clientId: 'store-security-frontend',
       },
-      initOptions:
-      {
-        pkceMethod:'S256',
-        redirectUri:'http://localhost:4200/welcome'
+      initOptions: {
+        pkceMethod: 'S256',
+        redirectUri: 'http://localhost:4200/welcome',
       },
-      loadUserProfileAtStartUp:false
+      loadUserProfileAtStartUp: false,
     });
 }
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([httpInterceptor])),
     provideAnimationsAsync(),
     importProvidersFrom(KeycloakAngularModule),
+    KeycloakService,
     {
       provide: APP_INITIALIZER,
-      useFactory: intializeKeycloak,
+      useFactory: initializeKeycloak,
       multi: true,
       deps: [KeycloakService],
     },

@@ -3,6 +3,8 @@ import { HomeComponent } from './component/home/home.component';
 import { WelcomeComponent } from './component/welcome/welcome.component';
 import { LoginComponent } from './component/login/login.component';
 import { LogoutComponent } from './component/logout/logout.component';
+import { authenticationGuard } from './guard/authentication.guard';
+import { roleGuard } from './guard/role.guard';
 import { ROLE } from './constant/role.constants';
 import { RegisterComponent } from './component/register/register.component';
 import { ManageUsersComponent } from './component/manage-users/manage-users.component';
@@ -16,18 +18,22 @@ import { UserArticlesPageComponent } from './component/user-articles-page/user-a
 import { UserOrdersPageComponent } from './component/user-orders-page/user-orders-page.component';
 import { ManageTrackComponent } from './component/manage-track/manage-track.component';
 import { TrackOrdersPageComponent } from './component/track-orders-page/track-orders-page.component';
-import { KeycloackGuard } from './guard/keycloack.guard';
 
 export const routes: Routes = [
     {
         path: '', component: HomeComponent, pathMatch: 'full'
     },
     {
-        path: 'welcome', component: WelcomeComponent
+        path: 'welcome', component: WelcomeComponent,
+        canActivate: [authenticationGuard, roleGuard],
+        data: { roles: [ROLE.USER, ROLE.ADMIN,ROLE.TRACK] }
+    },
+    {
+        path: 'login', component: LoginComponent
     },
     {
         path: 'logout', component: LogoutComponent,
-        canActivate: [KeycloackGuard],
+        canActivate: [authenticationGuard, roleGuard],
         data: { roles: [ROLE.USER, ROLE.ADMIN,ROLE.TRACK] }
     },
     {
@@ -35,7 +41,7 @@ export const routes: Routes = [
     },
     {
         path: 'users', component: ManageUsersComponent,
-        canActivate: [KeycloackGuard],
+        canActivate: [authenticationGuard, roleGuard],
         data: { roles: [ROLE.ADMIN] },
         children: [
             {
@@ -59,32 +65,32 @@ export const routes: Routes = [
     {
         path: 'article',
         component: ManageArticleComponent,
-        canActivate: [KeycloackGuard],
+        canActivate: [authenticationGuard, roleGuard],
         data: { roles: [ROLE.ADMIN] }
     },
     {
         path: 'articles',
         component: ListArticleComponent,
-        canActivate: [KeycloackGuard],
+        canActivate: [authenticationGuard, roleGuard],
         data: { roles: [ROLE.ADMIN] }
 
     },
     {
         path: 'user-page',
         component: ManageProfileComponent,
-        canActivate: [KeycloackGuard],
+        canActivate: [authenticationGuard, roleGuard],
         data: { roles: [ROLE.USER], admin: false },
     },
     {
         path: 'user-article',
         component: UserArticlesPageComponent,
-        canActivate: [KeycloackGuard],
+        canActivate: [authenticationGuard, roleGuard],
         data: { roles: [ROLE.USER], admin: false },
     },
     {
         path: 'user-orders-page',
         component: UserOrdersPageComponent,
-        canActivate: [KeycloackGuard],
+        canActivate: [authenticationGuard, roleGuard],
         data: { roles: [ROLE.USER], admin: false },
         children:
         [
@@ -97,7 +103,7 @@ export const routes: Routes = [
     {
         path:'track',
         component:TrackOrdersPageComponent,
-        canActivate: [KeycloackGuard],
+        canActivate: [authenticationGuard, roleGuard],
         data: { roles: [ROLE.TRACK]}
     },
     {
