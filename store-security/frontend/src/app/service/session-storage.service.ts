@@ -40,7 +40,7 @@ export class SessionStorageService {
 
   logout() {
     this.jwt.set(false);
-    window.sessionStorage.setItem('userdetails', '');
+    window.sessionStorage.removeItem('userdetails');
     this.keycloakService.logout();
     this.router.navigate(['']);
   }
