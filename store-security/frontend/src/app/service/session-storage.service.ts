@@ -42,7 +42,7 @@ export class SessionStorageService {
     this.jwt.set(false);
     window.sessionStorage.setItem('userdetails', '');
     this.keycloakService.logout();
-    this.router.navigate(['/']);
+    this.router.navigate(['']);
   }
 
   getJwt(): boolean | null {
