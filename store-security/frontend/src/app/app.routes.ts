@@ -18,6 +18,7 @@ import { UserArticlesPageComponent } from './component/user-articles-page/user-a
 import { UserOrdersPageComponent } from './component/user-orders-page/user-orders-page.component';
 import { ManageTrackComponent } from './component/manage-track/manage-track.component';
 import { TrackOrdersPageComponent } from './component/track-orders-page/track-orders-page.component';
+import { KeycloakAuthGuard } from 'keycloak-angular';
 
 export const routes: Routes = [
     {
@@ -25,7 +26,7 @@ export const routes: Routes = [
     },
     {
         path: 'welcome', component: WelcomeComponent,
-        canActivate: [authenticationGuard, roleGuard],
+        canActivate: [KeycloakAuthGuard],
         data: { roles: [ROLE.USER, ROLE.ADMIN,ROLE.TRACK] }
     },
     {
@@ -33,7 +34,7 @@ export const routes: Routes = [
     },
     {
         path: 'logout', component: LogoutComponent,
-        canActivate: [authenticationGuard, roleGuard],
+        canActivate: [KeycloakAuthGuard],
         data: { roles: [ROLE.USER, ROLE.ADMIN,ROLE.TRACK] }
     },
     {
@@ -41,7 +42,7 @@ export const routes: Routes = [
     },
     {
         path: 'users', component: ManageUsersComponent,
-        canActivate: [authenticationGuard, roleGuard],
+        canActivate: [KeycloakAuthGuard],
         data: { roles: [ROLE.ADMIN] },
         children: [
             {
@@ -65,32 +66,32 @@ export const routes: Routes = [
     {
         path: 'article',
         component: ManageArticleComponent,
-        canActivate: [authenticationGuard, roleGuard],
+        canActivate: [KeycloakAuthGuard],
         data: { roles: [ROLE.ADMIN] }
     },
     {
         path: 'articles',
         component: ListArticleComponent,
-        canActivate: [authenticationGuard, roleGuard],
+        canActivate: [KeycloakAuthGuard],
         data: { roles: [ROLE.ADMIN] }
 
     },
     {
         path: 'user-page',
         component: ManageProfileComponent,
-        canActivate: [authenticationGuard, roleGuard],
+        canActivate: [KeycloakAuthGuard],
         data: { roles: [ROLE.USER], admin: false },
     },
     {
         path: 'user-article',
         component: UserArticlesPageComponent,
-        canActivate: [authenticationGuard, roleGuard],
+        canActivate: [KeycloakAuthGuard],
         data: { roles: [ROLE.USER], admin: false },
     },
     {
         path: 'user-orders-page',
         component: UserOrdersPageComponent,
-        canActivate: [authenticationGuard, roleGuard],
+        canActivate: [KeycloakAuthGuard],
         data: { roles: [ROLE.USER], admin: false },
         children:
         [
@@ -103,7 +104,7 @@ export const routes: Routes = [
     {
         path:'track',
         component:TrackOrdersPageComponent,
-        canActivate: [authenticationGuard, roleGuard],
+        canActivate: [KeycloakAuthGuard],
         data: { roles: [ROLE.TRACK]}
     },
     {
