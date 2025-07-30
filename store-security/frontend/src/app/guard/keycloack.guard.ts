@@ -32,8 +32,8 @@ export class KeycloackGuard extends KeycloakAuthGuard
         });
     } else {
         this.userProfile = await this.keycloack.loadUserProfile();
-        const token = await this.keycloack.getToken();
-        this.sessionStorageService.login(token || '');
+        this.user.username = this.userProfile.email || "";
+        this.sessionStorageService.login(this.user);
     }
     
     const requiredRoles = route.data["roles"];

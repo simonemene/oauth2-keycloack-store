@@ -14,31 +14,23 @@ import { SessionStorageService } from './service/session-storage.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
-    keycloak = inject(KeycloakService);
+export class AppComponent{
    sessionStorageService = inject(SessionStorageService);
   title = 'frontend';
+
+  constructor()
+  {
+    console.log("inizio");
+    
+  }
 
    @HostListener('window:beforeunload', ['$event'])
   unloadNotification(event: any) {
     navigator.sendBeacon('/logout'); 
   }
 
-  async ngOnInit() {
-  const loggedIn = await this.keycloak.isLoggedIn();
-  if (loggedIn) {
-    const profile = await this.keycloak.loadUserProfile();
-    const token = await this.keycloak.getToken();
-
-    sessionStorage.setItem('username', profile.email || '');
-    sessionStorage.setItem('authorities', JSON.stringify(this.keycloak.getUserRoles()));
-
-    this.sessionStorageService.login(token!);
-  } else {
-    this.sessionStorageService.logout();
-  }
 }
 
 
 
-}
+

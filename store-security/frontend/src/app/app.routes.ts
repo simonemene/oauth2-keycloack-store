@@ -3,7 +3,6 @@ import { HomeComponent } from './component/home/home.component';
 import { WelcomeComponent } from './component/welcome/welcome.component';
 import { LoginComponent } from './component/login/login.component';
 import { LogoutComponent } from './component/logout/logout.component';
-import { roleGuard } from './guard/role.guard';
 import { ROLE } from './constant/role.constants';
 import { RegisterComponent } from './component/register/register.component';
 import { ManageUsersComponent } from './component/manage-users/manage-users.component';

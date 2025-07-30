@@ -1,14 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SessionStorageService } from '../../../service/session-storage.service';
-import { KeycloakService } from 'keycloak-angular';
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { UserDto } from '../../../model/UserDto';
 import { KeycloakProfile } from 'keycloak-js';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule,KeycloakAngularModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit {
 
   sessionStorageAuth = inject(SessionStorageService);
 
-  keycloackService = inject(KeycloakService);
+  keycloakService = inject(KeycloakService);
 
   user:UserDto = new UserDto();
   userProfile: KeycloakProfile |null = null;
@@ -25,30 +25,33 @@ export class HeaderComponent implements OnInit {
 
   authenticated = this.sessionStorageAuth.isAuthenticated;
 
+  constructor(){console.log("Ok");
+  }
+
   async ngOnInit() {
-  this.loggedIn = await this.keycloackService.isLoggedIn();
+  this.loggedIn = await this.keycloakService.isLoggedIn();
 
   if(this.loggedIn)
   {
-    const token = await this.keycloackService.getToken();
-    this.sessionStorageAuth.login(token || '');
-
-    this.userProfile = await this.keycloackService.loadUserProfile();
-    this.user.username = this.userProfile?.email || "";
-    window.sessionStorage.setItem('userdetails', JSON.stringify(this.user));
+    this.user = JSON.parse(window.sessionStorage.getItem('userdetails') || '{}');
+    this.sessionStorageAuth.login(this.user);  
   }
 }
 
-
-  login()
-  {
-    this.keycloackService.login();
+ async login() {
+    try {
+      const keycloak = await this.keycloakService.getKeycloakInstance();
+      keycloak.login(); // ✅ corretto per v15
+    } catch (err) {
+      console.error('Login failed:', err);
+    }
   }
+  
 
   logout()
   {
     this.sessionStorageAuth.logout();
-    this.keycloackService.logout("http://localhost:4200/login");
+    this.keycloakService.logout("http://localhost:4200/");
   }
 
 }
