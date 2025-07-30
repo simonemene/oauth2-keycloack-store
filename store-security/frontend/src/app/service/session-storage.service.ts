@@ -1,13 +1,16 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { UserDto } from '../model/UserDto';
 import { Router } from '@angular/router';
 import { withNoHttpTransferCache } from '@angular/platform-browser';
+import { KeycloakService } from 'keycloak-angular';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SessionStorageService {
   private readonly jwt = signal<boolean | null>(false);
+
+  keycloakService = inject(KeycloakService);
 
   user: UserDto;
 
@@ -38,6 +41,7 @@ export class SessionStorageService {
   logout() {
     this.jwt.set(false);
     window.sessionStorage.setItem('userdetails', '');
+    this.keycloakService.logout();
     this.router.navigate(['/']);
   }
 
