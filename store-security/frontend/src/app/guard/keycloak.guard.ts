@@ -21,13 +21,15 @@ export class KeycloakGuard extends KeycloakAuthGuard
     }
 
     public override async isAccessAllowed(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean | UrlTree> {
+        console.log(this.sessionService.getAuthoritiesJwt());
+        
+        
         if(!this.authenticated)
         {
-            await this.keycloak.login(
-                {
-                    redirectUri: window.location.origin + state.url
-                }
-            );
+           if (!this.authenticated) {
+             return false;
+           }
+
         }else
         {
             this.userProfile = await this.keycloak.loadUserProfile();

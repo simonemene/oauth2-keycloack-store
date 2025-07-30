@@ -45,7 +45,7 @@ export class LoginComponent {
         {         
           this.errorAuthentication=false;
           window.sessionStorage.setItem('Authorization',responseData.jwt);
-          this.sessionStorageAuth.login();
+          //this.sessionStorageAuth.login();
           this.router.navigate(['/welcome']);
         },
         error:(err)=>

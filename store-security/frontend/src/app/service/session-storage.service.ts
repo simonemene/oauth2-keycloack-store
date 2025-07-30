@@ -58,13 +58,46 @@ export class SessionStorageService {
     return '';
   }
 
-  /*getAuthoritiesJwt(): string[] {
-    let jwt = window.sessionStorage.getItem('Authorization');
-    if (jwt) {
-      const payload = this.decodeJwtPayload(jwt);
-      const authoritiesString = payload?.authorities;
-      return authoritiesString?.split(',') || [];
+ getAuthoritiesJwt(): string[] {
+  const kc = this.keycloakService.getKeycloakInstance();
+  if (kc && kc.token) {
+    const payload = this.decodeJwtPayload(kc.token);
+    if (!payload) return [];
+
+    const realmRoles = payload.realm_access?.roles || [];
+    const clientRoles = payload.resource_access?.['store-security-frontend']?.roles || [];
+
+    const allRoles = [...realmRoles, ...clientRoles];
+
+    const filteredRoles = allRoles.filter(role => 
+      !role.startsWith('default-roles') &&
+      role !== 'offline_access' &&
+      role !== 'uma_authorization'
+    );
+
+    return Array.from(new Set(filteredRoles));
+  }
+  return [];
+}
+
+
+
+  private decodeJwtPayload(token: string): any | null {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map((c) => {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          })
+          .join('')
+      );
+      return JSON.parse(jsonPayload);
+    } catch (e) {
+      console.warn('Invalid JWT token', e);
+      return null;
     }
-    return [];
-  }*/
+  }
 }

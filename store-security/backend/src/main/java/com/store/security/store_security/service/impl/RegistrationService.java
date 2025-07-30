@@ -96,6 +96,18 @@ public class RegistrationService implements IRegistrationService {
                     {
                         case 201:
                             log.info("User {} saved", userDto.getUsername());
+                            String id = response.getLocation().getPath().replaceAll(".*/([^/]+)$", "$1");
+                            UserResource userResource = keycloak.realm(keycloackProperties.realm()).users().get(id);
+                            List<RoleRepresentation> rolesToAssign = new ArrayList<>();
+                            for (String roleName : userDto.getAuthoritiesList()) {
+                                RoleRepresentation roleUser = keycloak.realm(keycloackProperties.realm())
+                                        .roles()
+                                        .get(roleName)
+                                        .toRepresentation();
+                                rolesToAssign.add(roleUser);
+                            }
+                            userResource.roles().realmLevel().add(rolesToAssign);
+
                             break;
                         case 409:
                             throw new UserException(String.format("User %s already exist", userDto.getUsername()));

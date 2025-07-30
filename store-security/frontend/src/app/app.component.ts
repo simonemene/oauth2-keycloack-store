@@ -12,14 +12,14 @@ import { UserDto } from './model/UserDto';
   imports: [
     RouterOutlet,
     HeaderComponent,
-    FooterComponent,
-    KeycloakAngularModule,
+    FooterComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'frontend';
+
 
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification(event: any) {

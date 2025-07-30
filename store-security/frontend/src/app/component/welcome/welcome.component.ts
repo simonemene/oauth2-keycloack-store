@@ -22,12 +22,21 @@ export class WelcomeComponent implements OnInit {
   userService = inject(UserService);
 
   constructor(private router: Router) {
+    console.log("partito");
+    
     effect(() => {
       if (this.userService.reloadUsers()) {
         this.userService.setRealoadUser(false);
         router.navigate(['/logout']);
       }
     });
+    console.log(this.sessionStorageAuth.isAuthenticated());
+    
+     if (this.sessionStorageAuth.isAuthenticated()) {
+    this.username.username = this.sessionStorageAuth.getUsernameJwt();
+    this.username.authoritiesList = this.sessionStorageAuth.getAuthoritiesJwt() || [];
+    console.log(this.username.authoritiesList);
+  }
   }
 
   ngOnInit(): void {
@@ -35,6 +44,8 @@ export class WelcomeComponent implements OnInit {
       let jwt = window.sessionStorage.getItem('Authorization');
       this.username.username = this.sessionStorageAuth.getUsernameJwt();
       this.username.authoritiesList = this.sessionStorageAuth.getAuthoritiesJwt();
+      console.log(this.username.authoritiesList);
+      
     }
   }
 
