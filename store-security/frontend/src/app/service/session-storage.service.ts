@@ -1,12 +1,15 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { UserDto } from '../model/UserDto';
 import { Router } from '@angular/router';
+import { withNoHttpTransferCache } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SessionStorageService {
-  private readonly jwt = signal<boolean | null>(null);
+  private readonly jwt = signal<boolean | null>(false);
+
+  user: UserDto;
 
   readonly isAuthenticated = computed(() => {
     const jwt = this.jwt();
@@ -14,27 +17,28 @@ export class SessionStorageService {
   });
 
   constructor(private router: Router) {
-    const authorization = window.sessionStorage.getItem('Authorization');
-    if (authorization) {
+    this.user = JSON.parse(window.sessionStorage.getItem('userdetails')!);
+    if (this.user) {
       try {
-        const parsed = JSON.parse(authorization);
-        if (parsed) {
-          this.jwt.set(parsed);
+        if (this.user.authorization == 'AUTH') {
+          this.jwt.set(true);
         }
       } catch (e) {
-        console.warn('Error authentication user:');
+        console.warn('Error authentication');
       }
     }
   }
 
-  login() {
+  login(user:UserDto) {
+    user.authorization = 'AUTH';
+    window.sessionStorage.setItem('userdetails',JSON.stringify(user));
     this.jwt.set(true);
   }
 
   logout() {
     this.jwt.set(false);
-    window.sessionStorage.setItem('Authorization', '');
-    this.router.navigate(['/login']);
+    window.sessionStorage.setItem('userdetails', '');
+    this.router.navigate(['/']);
   }
 
   getJwt(): boolean | null {
@@ -42,15 +46,15 @@ export class SessionStorageService {
   }
 
   getUsernameJwt(): string {
-    let jwt = window.sessionStorage.getItem('Authorization');
-    if (jwt) {
-      const payload = this.decodeJwtPayload(jwt);
-      return payload?.username;
+    let user = new UserDto();
+    user = JSON.parse(window.sessionStorage.getItem('userdetails')!);
+    if (user) {
+      return user.username;
     }
     return '';
   }
 
-  getAuthoritiesJwt(): string[] {
+  /*getAuthoritiesJwt(): string[] {
     let jwt = window.sessionStorage.getItem('Authorization');
     if (jwt) {
       const payload = this.decodeJwtPayload(jwt);
@@ -58,13 +62,5 @@ export class SessionStorageService {
       return authoritiesString?.split(',') || [];
     }
     return [];
-  }
-
-  decodeJwtPayload(token: string): any {
-    if (!token) return null;
-
-    const payload = token.split('.')[1];
-    const decoded = atob(payload);
-    return JSON.parse(decoded);
-  }
+  }*/
 }
