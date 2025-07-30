@@ -16,7 +16,7 @@ export class ArticleService {
   constructor(private http: HttpClient) { }
 
   addArticle(article: ArticleDto): Observable<ArticleDto> {
-    return this.http.post<ArticleDto>(`${this.baseUrl}${URL.ADDARTICLE}`, article);
+    return this.http.post<ArticleDto>(`${this.baseUrl}${URL.ADDARTICLE}`, article,{withCredentials:true});
   }
 
   getAllArticle(): Observable<ListArticleDto> {

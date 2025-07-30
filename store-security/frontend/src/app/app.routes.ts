@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './component/home/home.component';
 import { WelcomeComponent } from './component/welcome/welcome.component';
-import { LoginComponent } from './component/login/login.component';
 import { LogoutComponent } from './component/logout/logout.component';
 import { authenticationGuard } from './guard/authentication.guard';
 import { ROLE } from './constant/role.constants';
@@ -28,9 +27,6 @@ export const routes: Routes = [
         path: 'welcome', component: WelcomeComponent,
         canActivate: [KeycloakGuard],
         data: { roles: [ROLE.USER, ROLE.ADMIN,ROLE.TRACK] }
-    },
-    {
-        path: 'login', component: LoginComponent
     },
     {
         path: 'logout', component: LogoutComponent,
