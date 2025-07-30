@@ -40,12 +40,14 @@ export class ManageArticleComponent implements OnInit {
   }
 
   onSubmit() {
+    
     this.articleDto.description = this.articleForm.value.description;
     this.articleDto.name = this.articleForm.value.name;
     this.articleDto.price = this.articleForm.value.price;
     this.articleService.getAllArticle().subscribe(
       {
         next: (artilces: ListArticleDto) => {
+          
           this.articles = artilces;
           if (this.articles && this.articles.articles && this.articles.articles.length != 0) {
             this.existArticle = this.articles.articles.some(article => article.name === this.articleDto.name);
@@ -57,6 +59,7 @@ export class ManageArticleComponent implements OnInit {
             this.articleService.addArticle(this.articleDto).subscribe(
               {
                 next: (articleInsert: ArticleDto) => {
+                  
                   this.saveArticle = true;
                   this.articleForm.get('name')?.setValue('');
                   this.articleForm.get('description')?.setValue('');

@@ -20,6 +20,6 @@ export class ArticleService {
   }
 
   getAllArticle(): Observable<ListArticleDto> {
-    return this.http.get<ListArticleDto>(`${this.baseUrl}${URL.ALLARTICLE}`);
+    return this.http.get<ListArticleDto>(`${this.baseUrl}${URL.ALLARTICLE}`,{withCredentials:true});
   }
 }

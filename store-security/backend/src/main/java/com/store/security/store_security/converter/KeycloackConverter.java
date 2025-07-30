@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 public class KeycloackConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<GrantedAuthority> convert(Jwt source) {
 
@@ -23,7 +22,6 @@ public class KeycloackConverter implements Converter<Jwt, Collection<GrantedAuth
 		   return List.of();
 	   }
 	   return ((List<String>) realm_access.get("roles")).stream()
-			   .map(role-> "ROLE_" + role)
 			   .map(SimpleGrantedAuthority::new)
 			   .collect(Collectors.toList());
 	}
