@@ -27,13 +27,17 @@ public class DataConfigInit implements CommandLineRunner {
 
     private final IRegistrationService registrationService;
 
+    private final AuthoritiesRepository authoritiesRepository;
+    private final UserRepository userRepository;
+    private final StockRepository stockRepository;
+
     @Override
     public void run(String... args) throws Exception {
         RoleDto roleDto = registrationService.registrationRole(RoleDto.builder()
                         .name(RoleConstants.ADMIN.getRole())
                         .description(RoleConstants.ADMIN_DESCRIPTION.getRole())
                 .build());
-        UserDto userDto = registrationService.registrationUserKeycloack(UserDto.builder()
+        registrationService.registrationUserKeycloack(UserDto.builder()
                         .username("admin@example.it")
                         .password("admin")
                         .authoritiesList(List.of(roleDto.getName()))
@@ -47,6 +51,43 @@ public class DataConfigInit implements CommandLineRunner {
                         .password("track")
                         .authoritiesList(List.of(track.getName()))
                 .build());
+
+        // MY DATABASE
+
+        AuthoritiesEntity authorities = new AuthoritiesEntity();
+        authorities.setAuthority(RoleConstants.ADMIN.getRole());
+        authorities = authoritiesRepository.save(authorities);
+
+        UserEntity user = new UserEntity();
+        user.setUsername("admin@example.it");
+        user.setPassword(
+                "{bcrypt}$2a$12$TbCpjrh02.ulo/tG.pT/6eYKz06hqJJDLCqzX8Xzdl3TzZM10cZgW");
+        user.setAge(20);
+        user.setTmstInsert(LocalDateTime.now());
+        user.setAuthoritiesList(Set.of(authorities));
+
+        StockEntity stock = StockEntity.builder().build();
+        stockRepository.save(stock);
+        userRepository.save(user);
+
+        // USER
+        AuthoritiesEntity authoritiesUser = new AuthoritiesEntity();
+        authoritiesUser.setAuthority(RoleConstants.USER.getRole());
+        authoritiesRepository.save(authoritiesUser);
+        // TRACK
+        AuthoritiesEntity authoritiesTrack = new AuthoritiesEntity();
+        authoritiesTrack.setAuthority(RoleConstants.TRACK.getRole());
+        authoritiesTrack = authoritiesRepository.save(authoritiesTrack);
+
+        UserEntity tracker = new UserEntity();
+        tracker.setUsername("track@example.it");
+        tracker.setPassword(
+                "{bcrypt}$2a$12$vEjmF.7P/Kwyk72m7h/wwe.ihKl1i0uH4FWy004Zo482obiNnBf7.");
+        tracker.setAge(20);
+        tracker.setTmstInsert(LocalDateTime.now());
+        tracker.setAuthoritiesList(Set.of(authoritiesTrack));
+
+        userRepository.save(tracker);
     }
 }
 
