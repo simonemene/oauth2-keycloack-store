@@ -108,7 +108,12 @@ public class RegistrationService implements IRegistrationService {
                             }
                             userResource.roles().realmLevel().add(rolesToAssign);
                             //registration in my database
-                            registrationUser(userDto);
+                            if(!userDto.getAuthoritiesList().contains("ROLE_ADMIN")
+                            && !userDto.getAuthoritiesList().contains("ROLE_TRACK"))
+                            {
+                                registrationUser(userDto);
+                            }
+
 
                             break;
                         case 409:
