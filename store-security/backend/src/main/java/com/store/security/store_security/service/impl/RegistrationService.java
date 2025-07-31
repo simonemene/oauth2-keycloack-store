@@ -107,6 +107,8 @@ public class RegistrationService implements IRegistrationService {
                                 rolesToAssign.add(roleUser);
                             }
                             userResource.roles().realmLevel().add(rolesToAssign);
+                            //registration in my database
+                            registrationUser(userDto);
 
                             break;
                         case 409:
