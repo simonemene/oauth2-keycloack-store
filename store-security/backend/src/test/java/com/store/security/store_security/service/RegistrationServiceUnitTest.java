@@ -5,12 +5,15 @@ import com.store.security.store_security.entity.AuthoritiesEntity;
 import com.store.security.store_security.entity.UserEntity;
 import com.store.security.store_security.exceptions.UserException;
 import com.store.security.store_security.mapper.UserMapper;
+import com.store.security.store_security.mapper.keycloack.UserKeycloackMapper;
+import com.store.security.store_security.properties.KeycloackProperties;
 import com.store.security.store_security.repository.AuthoritiesRepository;
 import com.store.security.store_security.repository.UserRepository;
 import com.store.security.store_security.service.impl.RegistrationService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.keycloak.admin.client.Keycloak;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -39,12 +42,21 @@ public class RegistrationServiceUnitTest {
 	@InjectMocks
 	private RegistrationService registrationService;
 
+    @Mock
+	private Keycloak keycloak;
+
+	@Mock
+	private KeycloackProperties keycloackProperties;
+
+	@Mock
+	private UserKeycloackMapper userKeycloackMapper;
+
 
 	@BeforeEach
 	public void init()
 	{
 		MockitoAnnotations.openMocks(this);
-		registrationService = new RegistrationService(userRepository, userMapper, passwordEncoder, authoritiesRepository);
+		registrationService = new RegistrationService(userRepository, userMapper, passwordEncoder, authoritiesRepository,keycloak,keycloackProperties,userKeycloackMapper);
 	}
 	@Test
 	public void registrationAlreadyExistsFailed()
