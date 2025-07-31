@@ -1,6 +1,7 @@
 package com.store.security.store_security.security;
 
-import com.store.security.store_security.converter.KeycloackConverter;
+import com.store.security.store_security.converter.KeycloakAuthoritiesConverter;
+import com.store.security.store_security.converter.KeycloakJwtConverter;
 import com.store.security.store_security.exceptionhandle.CustomAccessDeniedHandler;
 import com.store.security.store_security.properties.StoreProperties;
 import com.store.security.store_security.provider.UserProviderDetailsManager;
@@ -45,8 +46,7 @@ public class ConfigSecurity {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-        converter.setJwtGrantedAuthoritiesConverter(new KeycloackConverter());
+        JwtAuthenticationConverter converter = new KeycloakJwtConverter();
 
         http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
