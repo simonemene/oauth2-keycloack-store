@@ -63,7 +63,6 @@ export class RegisterComponent {
       {
         next:(user:UserDto)=>
         {
-           this.router.navigate(['/login']);
         },
         error:(err)=>
         {

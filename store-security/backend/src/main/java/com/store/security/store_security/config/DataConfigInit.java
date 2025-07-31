@@ -51,6 +51,10 @@ public class DataConfigInit implements CommandLineRunner {
                         .password("track")
                         .authoritiesList(List.of(track.getName()))
                 .build());
+        registrationService.registrationRole(RoleDto.builder()
+                .name(RoleConstants.USER.getRole())
+                .description(RoleConstants.USER_DESCRIPTION.getRole())
+                .build());
 
         // MY DATABASE
 

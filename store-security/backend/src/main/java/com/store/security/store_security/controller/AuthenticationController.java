@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Tag(
@@ -55,6 +56,7 @@ public class AuthenticationController {
     )
     @PostMapping("/registration")
     public ResponseEntity<UserDto> registration(@RequestBody @Valid UserDto userDto) {
+        userDto.setAuthoritiesList(List.of("ROLE_USER"));
         UserDto result = registrationService.registrationUserKeycloack(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
 

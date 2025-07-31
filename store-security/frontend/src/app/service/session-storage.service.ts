@@ -38,11 +38,10 @@ export class SessionStorageService {
     this.jwt.set(true);
   }
 
-  logout() {
+  async logout() {
     this.jwt.set(false);
     window.sessionStorage.removeItem('userdetails');
-    this.keycloakService.logout();
-    this.router.navigate(['']);
+    await this.keycloakService.logout('http://localhost:4200');
   }
 
   getJwt(): boolean | null {

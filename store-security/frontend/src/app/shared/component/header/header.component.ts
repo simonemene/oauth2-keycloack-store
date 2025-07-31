@@ -41,6 +41,11 @@ export class HeaderComponent implements OnInit
   this.keycloak.login();
 }
 
+logout()
+{
+  this.sessionStorageAuth.logout();
+}
+
 
 
 }
