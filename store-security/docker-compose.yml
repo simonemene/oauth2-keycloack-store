@@ -6,19 +6,22 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:26.3.2
     container_name: store-keycloak
-    restart: unless-stopped
-    command: [ "start-dev" ]
+    command:
+      - start-dev
+      - --import-realm
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
+      DB_VENDOR: h2
+      KC_HEALTH_ENABLED: true
     volumes:
       - ./keycloak/import:/opt/keycloak/data/import:ro
     ports:
-      - "8180:8080"
+      - "8080:8080"
     networks:
       - store-network
     healthcheck:
-      test: [ "CMD-SHELL", "curl -v http://localhost:8080/q/health/live || exit 1" ]
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/q/health/live || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 5
