@@ -1,6 +1,31 @@
 version: '3.8'
 
 services:
+
+
+  keycloak:
+      image: quay.io/keycloak/keycloak:26.3.2
+      container_name: store-keycloak
+      restart: unless-stopped
+      command: start --import-realm
+      environment:
+        KEYCLOAK_ADMIN: admin
+        KEYCLOAK_ADMIN_PASSWORD: admin
+        KC_DB: mysql
+        KC_DB_URL_HOST: mysql
+        KC_DB_USERNAME: root
+        KC_DB_PASSWORD: password
+        KC_DB_DATABASE: basic-auth-store
+      volumes:
+        - ./keycloak/import:/opt/keycloak/data/import:ro
+      ports:
+        - "8081:8080"
+      depends_on:
+        - mysql
+      networks:
+        - store-network
+
+
   mysql:
     image: mysql:8.0
     container_name: store-mysql
