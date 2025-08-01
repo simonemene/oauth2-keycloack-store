@@ -4,26 +4,27 @@ services:
 
 
   keycloak:
-      image: quay.io/keycloak/keycloak:26.3.2
-      container_name: store-keycloak
-      restart: unless-stopped
-      command: start --import-realm
-      environment:
-        KEYCLOAK_ADMIN: admin
-        KEYCLOAK_ADMIN_PASSWORD: admin
-        KC_DB: mysql
-        KC_DB_URL_HOST: mysql
-        KC_DB_USERNAME: root
-        KC_DB_PASSWORD: password
-        KC_DB_DATABASE: basic-auth-store
-      volumes:
-        - ./keycloak/import:/opt/keycloak/data/import:ro
-      ports:
-        - "8081:8080"
-      depends_on:
-        - mysql
-      networks:
-        - store-network
+    image: quay.io/keycloak/keycloak:26.3.2
+    container_name: store-keycloak
+    restart: unless-stopped
+    command: [ "start-dev" ]
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    volumes:
+      - ./keycloak/import:/opt/keycloak/data/import:ro
+    ports:
+      - "8180:8080"
+    networks:
+      - store-network
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -v http://localhost:8080/q/health/live || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+
 
 
   mysql:
@@ -39,6 +40,13 @@ services:
       - db-data:/var/lib/mysql
     networks:
       - store-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
 
   backend:
     image: eclipse-temurin:21-jdk
@@ -52,8 +60,13 @@ services:
     command: java -jar backend-0.0.1-SNAPSHOT.jar
     environment:
       SPRING_PROFILES_ACTIVE: prod
+      KEYCLOAK_ENDPOINT: http://store-keycloak:8080
+      JWK_SET_URI: http://store-keycloak:8080/realms/store-security/protocol/openid-connect/certs
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
     networks:
       - store-network
 

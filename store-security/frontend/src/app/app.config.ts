@@ -11,12 +11,12 @@ import { httpInterceptor } from './interceptor/http.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
-function initializeKeycloak(keycloak: KeycloakService): () => Promise<any> { 
+function initializeKeycloak(keycloak: KeycloakService): () => Promise<any> {
   return () => {
     console.log('Initializing Keycloak...');
     return keycloak.init({
       config: {
-        url: 'http://localhost:8180/',
+        url: 'http://store-keycloak:8080/',
         realm: 'store-security',
         clientId: 'store-security-frontend',
       },
