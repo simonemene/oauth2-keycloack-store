@@ -6,22 +6,28 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:26.3.2
     container_name: store-keycloak
-    command:
-      - start-dev
-      - --import-realm
+    entrypoint: [ "/bin/bash", "-c" ]
+    command: >
+      "/opt/keycloak/bin/kc.sh build --health-enabled=true &&
+       /opt/keycloak/bin/kc.sh start --optimized"
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
       DB_VENDOR: h2
       KC_HEALTH_ENABLED: true
+      KC_HTTP_ENABLED: true
+      KC_METRICS_ENABLED: true
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
     volumes:
       - ./keycloak/import:/opt/keycloak/data/import:ro
     ports:
       - "8080:8080"
+      - "9000:9000"
     networks:
       - store-network
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:8080/q/health/live || exit 1" ]
+      test: [ "CMD-SHELL", "curl -f http://localhost:9000/health/live || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 5
