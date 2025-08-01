@@ -21,21 +21,17 @@ export class WelcomeComponent implements OnInit {
   sessionStorageAuth = inject(SessionStorageService);
   userService = inject(UserService);
 
-  constructor(private router: Router) {
-    console.log("partito");
-    
+  constructor(private router: Router) {    
     effect(() => {
       if (this.userService.reloadUsers()) {
         this.userService.setRealoadUser(false);
         router.navigate(['/logout']);
       }
     });
-    console.log(this.sessionStorageAuth.isAuthenticated());
     
      if (this.sessionStorageAuth.isAuthenticated()) {
     this.username.username = this.sessionStorageAuth.getUsernameJwt();
     this.username.authoritiesList = this.sessionStorageAuth.getAuthoritiesJwt() || [];
-    console.log(this.username.authoritiesList);
   }
   }
 
@@ -44,7 +40,6 @@ export class WelcomeComponent implements OnInit {
       let jwt = window.sessionStorage.getItem('Authorization');
       this.username.username = this.sessionStorageAuth.getUsernameJwt();
       this.username.authoritiesList = this.sessionStorageAuth.getAuthoritiesJwt();
-      console.log(this.username.authoritiesList);
       
     }
   }

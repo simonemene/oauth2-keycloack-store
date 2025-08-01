@@ -21,8 +21,6 @@ export class OrderService {
 
   order(articles:ArticlesOrderDto)
   {
-    console.log(articles);
-    
     return this.http.post<ArticlesOrderDto>(`${this.urlBase}${URL.ALLORDER}`,articles)
   }
 
